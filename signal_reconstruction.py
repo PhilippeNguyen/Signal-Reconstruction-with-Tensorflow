@@ -1,7 +1,6 @@
 import tensorflow as tf
 import argparse
 import librosa
-from librosa.core import istft
 import numpy as np
 from distutils.util import strtobool
 
@@ -15,7 +14,7 @@ parser.add_argument('--audio_file', action='store',
 parser.add_argument('--output', action='store',
                 dest='output',
                 default=None,
-                help='name of output wav')
+                help='name of output folder')
 parser.add_argument('--extras', action='store',
                 dest='extras',
                 default=True,type=strtobool,
@@ -46,7 +45,7 @@ S = tf.contrib.signal.stft(x,frame_length=N_FFT,frame_step=hop_length).eval(sess
 mag = np.abs(S)
 
 #%%Signal Reconstruction with TF section, using L-BFGS
-alpha = 1.0 #You can set this to 0 to see what it's like to optimize without regard to phase
+alpha = 100.0 #You can set this to 0 to see what it's like to optimize without regard to phase
 num_tf_iter = 300
 
 init_recon = np.random.randn(*x.shape).astype(np.float32)
@@ -116,8 +115,3 @@ if output is not None:
         zerop_complex_specgram = inv_magphase(mag_lib+np.pi, np.zeros_like(phase_angle))
         zerop_audio = librosa.istft(zerop_complex_specgram,win_length=N_FFT,hop_length=hop_length)
         librosa.output.write_wav(output+'zero_phase.wav',zerop_audio,sr=sr)
-#%%
-#import matplotlib.pyplot as plt
-#plt.plot(x[100:200])
-#plt.plot(tf_recon[100:200])
-#plt.plot(audio[100:200])
