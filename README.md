@@ -7,3 +7,6 @@ Just run signal_reconstruction.py, command line arguments:
 * --audio_file : path to audio file to use, otherwise uses default
 * --output : path to output folder, otherwise doesn't output anything
 * --extras : boolean, if true, saves reconstructions with random and zero phase
+
+Default sample is taken from the Common Voice Dataset (cv-other-test folder)
+Griffin-Lim Implementation is taken from : https://github.com/tensorflow/magenta/blob/master/magenta/models/nsynth/utils.py
